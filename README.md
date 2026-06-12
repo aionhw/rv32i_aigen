@@ -52,6 +52,21 @@ Expected output:
     Hello, RV32I 3-stage!
     [tb] CPU halted (ECALL) after 3480 cycles
 
+## Build & run (xezim)
+xezim simulates the design directly from the SystemVerilog sources (no separate
+compile step). Use `-s` to select the top module:
+
+    xezim --simulate -s tb_soc -Irtl \
+      rtl/rv32i_pkg.sv rtl/alu.sv rtl/regfile.sv rtl/tcm.sv rtl/uart.sv \
+      rtl/rv32i_core.sv rtl/soc_top.sv tb/tb_soc.sv
+
+Or use the bundled helper script (paths are relative to its location; set the
+`XEZIM` env var to override the binary path):
+
+    ./run_xezim.sh
+
+Produces the same output as Verilator (`Hello, RV32I 3-stage!` + ECALL halt).
+
 ## Notes / not implemented
 CSRs, traps/interrupts, and timers are stubbed (FENCE and CSR ops decode as NOP;
 ECALL/EBREAK halt the core). RESET_PC is a parameter. The demo program polls
